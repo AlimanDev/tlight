@@ -10,6 +10,8 @@ class Organization(models.Model):
     short_name = models.CharField(_('Short Name organization'), max_length=10)
     tin = models.CharField(_('TIN'), max_length=12)
     ppc = models.CharField(_('Checkpoint'), max_length=9)
+    departments = models.ManyToManyField('customers.Department', verbose_name=_('Departments'),
+                                         related_name='departments', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
