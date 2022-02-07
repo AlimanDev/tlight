@@ -47,7 +47,7 @@ class Client(models.Model):
 
     def save(self, *args, **kwargs):
         self.re_save_field_status_change_at(kwargs)
-        super(self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if self.pk and not self.uuid:
             create_uuid(self)
 

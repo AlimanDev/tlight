@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from faker import Faker
 from apps.customers.models import client, organization, department
 
-faker_ru = Faker(['en'])
+faker_ru = Faker(['ru'])
 faker = Faker()
 
 
