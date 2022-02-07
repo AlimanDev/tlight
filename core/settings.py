@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 PROJECT_LIBS = [
     'phonenumber_field',
+    'drf_yasg',
+    'mptt',
+    'rest_framework',
 ]
 
 PROJECT_APPS = [
