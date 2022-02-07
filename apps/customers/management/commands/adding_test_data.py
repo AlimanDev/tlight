@@ -17,8 +17,8 @@ class Command(BaseCommand):
         if options['type'] == 'clear':
             self.clear()
         else:
-            for i in range(0, 30000):
-                self.gen_clients()
+            # for i in range(0, 30000):
+            #     self.gen_clients()
             for i in range(0, 200):
                 self.gen_organization()
                 dep = self.gen_department()
@@ -26,7 +26,7 @@ class Command(BaseCommand):
                 b = a - random.randint(1, 6)
                 dep.clients.add(*client.Client.objects.all()[b:a])
                 if faker.pybool():
-                    self.gen_department(department)
+                    self.gen_department(dep)
 
     @staticmethod
     def clear():
@@ -39,7 +39,7 @@ class Command(BaseCommand):
         gender = 'man' if faker.pybool() else 'woman'
         full_name = faker_ru.name_male().split() if gender == 'man' else faker_ru.name_female().split()
         client.Client.objects.create(
-            phone=faker.bothify(text='##########'),
+            phone=faker.bothify(text='############'),
             first_name=full_name[1],
             last_name=full_name[0],
             patronymic=full_name[2],
@@ -51,18 +51,20 @@ class Command(BaseCommand):
 
     @staticmethod
     def gen_organization() -> organization.Organization:
-        full_name = faker_ru.name()
+        name = faker_ru.company()
+        short_name = ''.join([n[0] for n in name.split()])
+        print(name)
         obj = organization.Organization.objects.create(
-            full_name=full_name,
-            short_name=full_name.split()[1],
-            inn=faker.bothify(text='##########'),
-            kpp=faker.bothify(text='#########'),
-            created_at=faker.date_time_this_decade(tzinfo=pytz.UTC),
+            name=name,
+            short_name=short_name,
+            tin=faker.bothify(text='##########'),
+            ppc=faker.bothify(text='#########'),
         )
         return obj
 
     @staticmethod
     def gen_department(parent=None) -> department.Department:
+        print(parent)
         obj = department.Department.objects.create(
             name=faker_ru.company(), parent=parent)
         return obj

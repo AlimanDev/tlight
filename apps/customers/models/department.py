@@ -20,7 +20,7 @@ class Department(MPTTModel):
         verbose_name_plural = _('Departments')
 
     def save(self, *args, **kwargs):
-        super(self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if self.pk and not self.uuid:
             create_uuid(self)
 

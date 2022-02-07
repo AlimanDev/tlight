@@ -4,6 +4,7 @@ from django.db import models
 from django.conf import settings
 
 from phonenumber_field.modelfields import PhoneNumberField
+import phonenumbers
 from timezone_field import TimeZoneField
 
 from core.libs.utils import create_uuid
@@ -54,8 +55,9 @@ class Client(models.Model):
     def __str__(self):
         return self.uuid
 
-    def get_phone(self) -> str:
-        return self.phone.as_e16
+    def get_phone(self) -> phonenumbers.phonenumber.PhoneNumber:
+        phone = phonenumbers.parse("+" + self.phone, None)
+        return phone
 
 
 class AdditionalPhone(models.Model):
