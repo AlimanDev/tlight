@@ -12,8 +12,7 @@ class Department(MPTTModel):
     name = models.CharField(_('Name'), max_length=100)
     parent = TreeForeignKey('self', verbose_name=_('Parent'), related_name='children', on_delete=models.CASCADE,
                             null=True, blank=True)
-    client = models.ForeignKey(to="customers.Client", verbose_name=_('Client'),
-                               related_name='departments', on_delete=models.CASCADE)
+    client = models.ManyToManyField(to="customers.Client", verbose_name=_('Client'), related_name='departments')
 
     class MPTTMeta:
         db_table = 'departments'
@@ -24,3 +23,6 @@ class Department(MPTTModel):
         super(self).save(*args, **kwargs)
         if self.pk and not self.uuid:
             create_uuid(self)
+
+    def clients_count(self):
+        return self.client.count()
