@@ -1,11 +1,13 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
+from core.libs.utils import create_uuid
+
 
 class Organization(models.Model):
     UID = '02'
 
-    uuid = models.CharField(_('UID'), blank=True)
+    uuid = models.CharField(_('UID'), max_length=250, blank=True)
     name = models.CharField(_('Name organization'), max_length=150)
     short_name = models.CharField(_('Short Name organization'), max_length=10)
     tin = models.CharField(_('TIN'), max_length=12)
@@ -27,4 +29,4 @@ class Organization(models.Model):
     def save(self, *args, **kwargs):
         super(self).save(*args, **kwargs)
         if self.pk and not self.uuid:
-            self.create_uuid()
+            create_uuid(self)

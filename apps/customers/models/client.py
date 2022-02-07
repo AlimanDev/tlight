@@ -6,6 +6,8 @@ from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from timezone_field import TimeZoneField
 
+from core.libs.utils import create_uuid
+
 
 class Client(models.Model):
     UID = '01'
@@ -21,7 +23,7 @@ class Client(models.Model):
         EXTERNAL = "external", _("External")
         INDIRECT = "indirect", _("Indirect")
 
-    uuid = models.CharField(_('UID'), blank=True)
+    uuid = models.CharField(_('UID'), max_length=250, blank=True)
     first_name = models.CharField(_('First name'), max_length=50)
     last_name = models.CharField(_('Last name'), max_length=50)
     patronymic = models.CharField(_('Patronymic'), max_length=50)
@@ -39,11 +41,6 @@ class Client(models.Model):
         verbose_name = _('Client')
         verbose_name_plural = _('Clients')
 
-    def create_uuid(self):
-        if self.pk and not self.uuid:
-            self.uuid = f'{self.pk}{self.UID}'
-            self.save(update_fields=['uid'])
-
     def re_save_field_status_change_at(self, kwargs: dict):
         if kwargs.get('is_active') and kwargs.get('is_active') != self.is_active:
             self.status_change_at = time_zone.now
@@ -51,7 +48,8 @@ class Client(models.Model):
     def save(self, *args, **kwargs):
         self.re_save_field_status_change_at(kwargs)
         super(self).save(*args, **kwargs)
-        self.create_uuid()
+        if self.pk and not self.uuid:
+            create_uuid(self)
 
     def __str__(self):
         return self.uuid
