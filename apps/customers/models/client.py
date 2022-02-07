@@ -105,7 +105,7 @@ class SocialAccount(models.Model):
         verbose_name = _('Social Account')
         verbose_name_plural = _('Social Accounts')
 
-    def check_social_account_for_duplicate(self, kwargs):
+    def check_social_account_for_duplicate(self, kwargs):  # FIXME
         if kwargs.get('account_type') in self.ONLY_ONE:
             if kwargs.get('account_type') in [account.account_type for account in self.client.social_accounts.all()]:
                 return False
