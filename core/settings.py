@@ -29,6 +29,13 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+PROJECT_LIBS = [
+    'phonenumber_field',
+]
+
+PROJECT_APPS = [
+    'apps.customers',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+] + PROJECT_LIBS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
